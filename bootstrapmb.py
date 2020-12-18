@@ -9,6 +9,7 @@ from bs4 import BeautifulSoup
 class get_html():
     def __init__(self, get_turl):
         self.get_turl = get_turl
+        #设置cookie值
         self.cookie = ''
         self.headers = {
             'Accept': 'text/html, */*; q=0.01',
