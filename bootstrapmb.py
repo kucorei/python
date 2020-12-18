@@ -9,6 +9,7 @@ from bs4 import BeautifulSoup
 class get_html():
     def __init__(self, get_turl):
         self.get_turl = get_turl
+        self.cookie = ''
         self.headers = {
             'Accept': 'text/html, */*; q=0.01',
             'Accept-Encoding': 'gzip, deflate',
@@ -16,7 +17,7 @@ class get_html():
             'Connection': 'keep-alive',
             'Content-Length': '1388',
             'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
-            'Cookie': 'bootstrapmbUserID=BA428376FD5B6B6D; radius=220.113.159.116; uudid=cmsb60af057-abd0-39a9-b230-3cd8eabb09c3; ASP.NET_SessionId=wwsgffkiuw1lkgwpgp5cjwm5; Hm_lvt_df6f78cfc7b28956736ab98287309c75=1606056944,1606109518,1606109614,1607790422; Hm_lpvt_df6f78cfc7b28956736ab98287309c75=1607913278',
+            'Cookie': self.cookie,
             'DNT': '1',
             'Host': 'www.bootstrapmb.com',
             'Origin': 'http://www.bootstrapmb.com',
@@ -24,7 +25,7 @@ class get_html():
             'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/72.0.3626.81 Safari/537.36 SE 2.X MetaSr 1.0',
             'X-Requested-With': 'XMLHttpRequest',
         }
-        self.de = {
+        self.headers1 = {
             'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
             'Accept-Encoding': 'gzip, deflate',
             'Accept-Language': 'zh-CN,zh;q=0.9',
@@ -39,7 +40,7 @@ class get_html():
             'Accept-Language': 'zh-CN,zh;q=0.9',
             'Connection': 'keep-alive',
             'Cache-Control': 'max-age=0',
-            'Cookie': 'bootstrapmbUserID=BA428376FD5B6B6D; radius=220.113.159.116; uudid=cmsb60af057-abd0-39a9-b230-3cd8eabb09c3; ASP.NET_SessionId=wwsgffkiuw1lkgwpgp5cjwm5; Hm_lvt_df6f78cfc7b28956736ab98287309c75=1606056944,1606109518,1606109614,1607790422; Hm_lpvt_df6f78cfc7b28956736ab98287309c75=1607913278',
+            'Cookie': self.cookie,
             'DNT': '1',
             'Host': 'www.bootstrapmb.com',
             'Origin': 'http://www.bootstrapmb.com',
@@ -64,7 +65,6 @@ class get_html():
         self.gui(self.x)
         for g in self.l:
             self.k.append(g)
-        # print(self.k)
         self.os_get()
         # 文档路径
         self.os_chdir(self.os_path)
@@ -92,7 +92,7 @@ class get_html():
         for get in self.t:
             gett = self.t[get]
             try:
-                content = requests.get(gett, headers=self.de)
+                content = requests.get(gett, headers=self.headers1)
                 with open(get, 'wb') as f:
                     f.write(content.content)
                     f.close()
@@ -102,18 +102,10 @@ class get_html():
 
     # 获取目录
     def get_request(self):
-        # data = json.dumps(self.data)
         h = requests.post('http://www.bootstrapmb.com/_Ajax/Opt', headers=self.headers, data=self.data)
         self.content = h.text
-        # print(h)
-        # print(h.text)
-        # print(h.content)
 
     def processing(self):
-        # with open('text2.txt',encoding='utf-8') as f:
-        #     w = f.read()
-        #     print(w)
-        #     f.close()
         w = self.content
         soup = BeautifulSoup(w, 'html.parser')
         self.x = soup.div.ul
@@ -153,16 +145,12 @@ class get_html():
             for f in i:
                 q = q + f
             self.h[q[1:-1]] = q[1:-1]
-        # print(self.h)
 
     # 创建文件夹
     def os_chdir(self, txt):
         os.chdir(txt)
-        # os.chdir((txt+'/'+self.path))
-        # print(os.getcwd())
         for i in self.h:
             t = i
-            # print(t)
             try:
                 if not os.path.exists(t):
                     os.makedirs(t)
@@ -171,8 +159,6 @@ class get_html():
         for pah in self.k:
             rr = txt + pah
             self.t[rr] = self.url + pah
-
-            # print(rr,self.url+pah)
 
 
 get_html('http://www.bootstrapmb.com/item/8726')
